@@ -6,13 +6,13 @@ It's time to put those Redux fundamentals you've learned to work, and build your
 first project! Your goal for this project is to **build a Redux application
 based on a wireframe and a set of deliverables, following React and Redux principles.**
 
-
 ## Requirements
 
 Your project should demonstrate your ability to do the following:
 
 - Create a component hierarchy to represent a UI.
-- Use the createStore() function provided by the Redux library to manage global state.
+- Use the configureStore() function provided by the Redux toolkit to manage
+  global state.
 - Use the useSelector() and useDispatch() hooks provided by React-Redux to
   access and update the store.
 - Implement all CRUD actions
@@ -35,16 +35,16 @@ As a user, I can…
   - Remove a habit.
 - Complete a daily habit.
 - **Bonus:** See the % of total habits completed.
-- **Bonus:** See the current streak of a single habit's completion.
+- **Bonus:** Implement testing into the project
 
 ### Wireframes
-<!-- 
+
 As a rough guide for what the finished project should look like, here are some
 wireframes:
 
-![Wireframes](https://curriculum-content.s3.amazonaws.com/phase-2/react-tdd-project/react-tdd-project-wireframes.png)
+![Wireframes](https://curriculum-content.s3.amazonaws.com/phase-4/redux-project-wireframes/habit-tracker-wireframe.png)
 
-- [Original wireframes](https://excalidraw.com/#json=X3xeHnsI3Nzk9mATEfvfV,zJtbepwBNSdeLwYhRzSNQg)
+- [Original wireframes](https://excalidraw.com/#json=iPzOrUiaL6geXoDYRankp,LJmQXoSfXIk7TMNhBLg00g)
 
 Styling isn't the focus of this project, and you're free to change the look and
 feel as you like, so long as all the user stories are represented in your
@@ -52,7 +52,7 @@ application.
 
 You should use these wireframes to determine what **routes** your application
 will need, and to design your **component hierarchy** following the process from
-[Thinking in React][thinking]. -->
+[Thinking in React][thinking].
 
 ## Setup
 
