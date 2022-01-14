@@ -98,11 +98,10 @@ $ npm install -g json-server
 
 ## Getting Started
 
-Open up your project in your text editor, and then let's boot up our project by
-running:
+Open up your project in your text editor, and then let's get all of our dependencies:
 
 ```console
-$ npm install && npm start
+$ npm install
 ```
 
 To set up your Redux, we need to start with creating a store using
