@@ -4,7 +4,8 @@
 
 It's time to put those Redux fundamentals you've learned to work, and build your
 first project! Your goal for this project is to **build a Redux application
-based on a wireframe and a set of deliverables, following React and Redux principles.**
+based on a wireframe and a set of deliverables, following React and Redux
+principles.**
 
 ## Requirements
 
@@ -22,7 +23,7 @@ by which your assignment will be evaluated.
 
 ## Project Brief
 
-For this project, you'll be creating a React-Redux *Habit Tracker* frontend
+For this project, you'll be creating a React-Redux _Habit Tracker_ frontend
 application. You must build features that complete the following **user
 stories**:
 
@@ -37,7 +38,7 @@ As a user, I can…
 - **Bonus:** See the % of total habits completed.
 - **Bonus:** Implement testing into the project
 
-### Wireframes
+## Wireframes
 
 As a rough guide for what the finished project should look like, here are some
 wireframes:
@@ -50,123 +51,202 @@ Styling isn't the focus of this project, and you're free to change the look and
 feel as you like, so long as all the user stories are represented in your
 application.
 
-You should use these wireframes to determine what **routes** your application
-will need, and to design your **component hierarchy** following the process from
-[Thinking in React][thinking].
+You should use these wireframes to design your **component hierarchy** following
+the process from [Thinking in React][thinking].
 
 ## Setup
 
-We have created some of the components for you. You will need to set up your
-Redux store and connect the provided components as well as the components you
-create to complete this project.
+You will start your app from scratch, but we will help provide some of the
+boilerplate code to get you started in a little bit. Start by creating a new
+react app by running the following:
 
-<!-- update this with links and commands -->
-You will still need to add some dependencies, our curriculum covers
-[React-Redux], [Redux], [Redux-Thunk] which we recommend using:
+```console
+$ npx create-react-app <your-app-name>
+```
+
+Let's start by installing `react-redux` so we can connect all the moving pieces
+of our app. 
 
 ```console
 $ npm install react-redux
 ```
 
-<!-- > Note: make sure to include @5 at the end of the install command to install
-> React Router version 5 instead of version 6. If you're curious to try out
-> version 6, you can view information on the differences between v5 and v6 in
-> [the docs][react router 6]. -->
-
-<!-- ### Setup: MSW for Tests
-
-Create React App comes with [Jest][jest] and [React Testing Library][rtl]
-pre-configured, so you don't need to do any additional setup to start writing
-tests for React components.
-
-You will need to install [Mock Service Worker][msw] in order to mock API
-requests for testing:
+Next, we want to install the redux toolkit. If you need a refresher,
+revisit
+[this lesson.](https://github.com/learn-co-curriculum/react-hooks-redux-toolkit)
+CD into your app's directory and then run:
 
 ```console
-$ npm install msw
+$ npm install @reduxjs/toolkit
 ```
 
-Follow [this guide](https://mswjs.io/docs/getting-started/mocks/rest-api) for
-configuring mocks for a REST API. -->
+Finally, we want to make sure we have `json-server` installed so we can persist
+data in our habit tracker.
 
-<!-- ## GitHub API
+To check if you have `json-server` installed already run:
 
-This project involves using the GitHub API to access data. The [GitHub API
-docs][gh api] are an awesome resource for everything you'll need to build out
-the user stories, but they can also be overwhelming to get started. Here's a
-quick example of what you'll need to do to interact with the GitHub API.
+```console
+$ npm list -g
+```
 
-One of the features you'll be building out is the ability to **search for
-users** using the GitHub API. The documentation for this feature of the GitHub
-API can be found here:
+If you see the package there you are good to go! Otherwise run the following to
+install it globally:
 
-- https://docs.github.com/en/rest/reference/search#search-users
+```console
+$ npm install -g json-server
+```
 
-Take a look at the API documentation. What URL do we use to make the search? How
-do we tell the GitHub API what user we're looking for?
+## Getting Started
 
-The base URL for all API requests is `https://api.github.com`, and the endpoint
-for searching users is `/search/users`. To provide a search term, we use a query
-parameter `q`. All together, to search a user whose username includes "octo",
-we'd make a request to the following URL:
+Open up your project in your text editor, and then let's boot up our project by
+running:
 
-- https://api.github.com/search/users?q=octo
+```console
+$ npm install && npm start
+```
 
-In order to perform this search from your application, you'll need to make a GET
-request from a React component, parse the response data, and use that data for
-your component's state. Something like this:
+To set up your Redux, we need to start with creating a store using
+`configureStore` from the redux toolkit. Create a new file, `store.js` in your
+project's `src` directory, and add the following code:
 
-```jsx
-// search term is a dynamic prop
-function SearchResults({ term }) {
-  // state to hold the search results
-  const [users, setUsers] = useState([]);
+```js
+// src/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import habitsReducer from "./features/habitsSlice";
 
-  useEffect(() => {
-    // initiate a request when the component mounts or the term changes
-    fetch(`https://api.github.com/search/users?q=${term}`)
-      .then((r) => r.json())
-      .then((result) => setUsers(result.items));
-  }, [term]);
+const store = configureStore({
+  reducer: {
+    habits: habitsReducer,
+  },
+});
 
-  // render the results as JSX
+export default store;
+```
+
+Now let's go ahead and connect our store to the `index.js` file. First we want
+to make sure we have imported the Provider from `react-redux`, as well as our
+store, then pass the store provider. When you're done your `index.js` should
+look like this:
+
+```js
+// src/index.js
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import App from "./App";
+import store from "./store"; 
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+```
+
+Now you're probably getting a ton of errors from our missing reducer in our
+store. Go ahead and create a new directory `/src/features`, and inside of the
+new directory create a new file called `habitsSlice.js`.
+
+Add the following boilerplate code to `habitsSlice.js`:
+
+```js
+// src/features/habitsSlice.js
+
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+// save our base URL
+const baseUrl = "http://localhost:3000/habits";
+
+export const fetchHabits = createAsyncThunk("habits/fetchHabits", () => {
+  // return a Promise containing the data we want
+  return fetch(baseUrl)
+    .then((response) => response.json())
+    .then((data) => data);
+} );
+
+// export const habitsSlice = createSlice({)}
+
+const habitsSlice = createSlice({
+  name: "habits",
+  initialState: {
+    entities: [], // array of habits
+    status: "idle", // loading state
+  },
+  reducers: {
+    // add your reducers here
+  },
+  extraReducers: {
+    // handle async actions: pending, fulfilled, rejected (for errors)
+    [fetchHabits.pending](state) {
+      state.status = "loading";
+    },
+    [fetchHabits.fulfilled](state, action) {
+      state.entities = action.payload;
+      state.status = "idle";
+    },
+  },
+} );
+
+export default habitsSlice.reducer;
+```
+
+Your app should be free of errors, and you should be able to see your initial
+state in the store using the Redux devtools! The final piece missing is your
+database. In the root of your project, create a new file called `db.json`. This
+is where our data will be stored. Add the following seed data to this file:
+
+```json
+{
+  "habits": [
+    {
+      "id": "1",
+      "title": "code everyday",
+      "days": {
+        "sunday": false,
+        "monday": false,
+        "tuesday": false,
+        "wednesday": false,
+        "thursday": false,
+        "friday": false,
+        "saturday": false
+      }
+    },
+    {
+      "id": "2",
+      "title": "read for 30 minutes",
+      "days": {
+        "sunday": false,
+        "monday": false,
+        "tuesday": false,
+        "wednesday": false,
+        "thursday": false,
+        "friday": false,
+        "saturday": false
+      }
+    }
+  ]
 }
 ```
 
-### Endpoints
+Finally, let's get the json-server running. Run the following in your console,
+and then head to `http://localhost:3000/habits` in your browser.
 
-Here are all the important endpoints you'll need in order to build out the
-remaining user stories:
+```console
+$ json-server --watch db.json
+```
 
-- [`/search/users`](https://docs.github.com/en/rest/reference/search#search-users):
-  search users using their GitHub username
-- [`/users/{username}`](https://docs.github.com/en/rest/reference/users#get-a-user):
-  get a user's profile information
-- [`/users/{username}/repositories`](https://docs.github.com/en/rest/reference/repos#list-repositories-for-a-user):
-  list repositories for a user
+In another terminal, run the following to get your project running:
 
-### API Limitations
+```console
+$ npm start
+```
 
-The GitHub API is free to use, and works without needing any authentication
-(such as an API key). However, unauthenticated clients are limited to **60
-requests per hour**. It's pretty easy to go over that limit as you're building
-your application, so you may want to create an access token that you can use
-with the API:
+If all is well, you should see the React start up page on `http://localhost:3002`,
+and the initial seed data on `http://localhost:3000/habits`.
 
-- https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-
-**Important**: make sure not to include your API key in your project's source
-code! To keep your API key safe, create a `.env.development.local` file and
-store your key there while you are developing the application. The `.local`
-environment files are intended not to be checked into source control, and are
-included in the `.gitignore` file that comes with Create React App. Refer to
-[this guide][create-react-app env] for information on working with API keys in
-Create React App.
-
-Note that even keys that aren't included in your source control may still be
-included in the client-side code when you publish your project.
-[This guide](https://www.freecodecamp.org/news/how-to-access-secret-api-keys-using-netlify-functions-in-a-react-app/)
-has information on using Netlify Functions to hide API keys. -->
+Use the rubric below, along with the user stories provided at the beginning of
+this README to finish building out your Redux Application.
 
 <!-- ## Rubric
 
