@@ -64,45 +64,23 @@ react app by running the following:
 $ npx create-react-app <your-app-name>
 ```
 
-Let's start by installing `react-redux` so we can connect all the moving pieces
-of our app.
-
-```console
-$ npm install react-redux
-```
-
-Next, we want to install the redux toolkit. If you need a refresher, revisit
-[this lesson.](https://github.com/learn-co-curriculum/react-hooks-redux-toolkit)
+Let's start by installing Redux Toolkit, which includes all the code needed for
+working with React and Redux together. If you need a refresher, revisit
+[this lesson](https://github.com/learn-co-curriculum/react-hooks-redux-toolkit).
 CD into your app's directory and then run:
 
 ```console
 $ npm install @reduxjs/toolkit
 ```
 
-Finally, we want to make sure we have `json-server` installed so we can persist
-data in our habit tracker.
-
-To check if you have `json-server` installed already run:
+We also want to make sure we have `json-server` installed so we can persist data
+in our habit tracker. Install it:
 
 ```console
-$ npm list -g
-```
-
-If you see the package there you are good to go! Otherwise run the following to
-install it globally:
-
-```console
-$ npm install -g json-server
+$ npm install json-server
 ```
 
 ## Getting Started
-
-Open up your project in your text editor, and then let's get all of our
-dependencies:
-
-```console
-$ npm install
-```
 
 To set up your Redux, we need to start with creating a store using
 `configureStore` from the redux toolkit. Create a new file, `store.js` in your
