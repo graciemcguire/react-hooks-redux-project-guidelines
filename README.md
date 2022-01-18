@@ -82,96 +82,26 @@ $ npm install json-server
 
 ## Getting Started
 
-To set up your Redux, we need to start with creating a store using
-`configureStore` from the redux toolkit. Create a new file, `store.js` in your
-project's `src` directory, and add the following code:
+Open up your project in your text editor to follow along with the next steps,
+where we'll configure `json-server` and begin scaffolding the React application.
 
-```js
-// src/store.js
-import { configureStore } from "@reduxjs/toolkit";
-import habitsReducer from "./features/habitsSlice";
+### Configuring `json-server`
 
-const store = configureStore({
-  reducer: {
-    habits: habitsReducer,
-  },
-});
+To start, update the `scripts` section of the `package.json` file so you're able
+to run your React application and `json-server` on separate ports:
 
-export default store;
+```json
+{
+  "scripts": {
+    "start": "react-scripts start",
+    "server": "json-server --watch db.json --port=4000",
+    "build": "react-scripts build"
+  }
+}
 ```
 
-Now let's go ahead and connect our store to the `index.js` file. First we want
-to make sure we have imported the Provider from `react-redux`, as well as our
-store, then pass the store provider. When you're done your `index.js` should
-look like this:
-
-```js
-// src/index.js
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import App from "./App";
-import store from "./store";
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById("root")
-);
-```
-
-Now you're probably getting a ton of errors from our missing reducer in our
-store. Go ahead and create a new directory `/src/features`, and inside of the
-new directory create a new file called `habitsSlice.js`.
-
-Add the following boilerplate code to `habitsSlice.js`:
-
-```js
-// src/features/habitsSlice.js
-
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-// save our base URL
-const baseUrl = "http://localhost:3000/habits";
-
-export const fetchHabits = createAsyncThunk("habits/fetchHabits", () => {
-  // return a Promise containing the data we want
-  return fetch(baseUrl)
-    .then((response) => response.json())
-    .then((data) => data);
-});
-
-// export const habitsSlice = createSlice({)}
-
-const habitsSlice = createSlice({
-  name: "habits",
-  initialState: {
-    entities: [], // array of habits
-    status: "idle", // loading state
-  },
-  reducers: {
-    // add your reducers here
-  },
-  extraReducers: {
-    // handle async actions: pending, fulfilled, rejected (for errors)
-    [fetchHabits.pending](state) {
-      state.status = "loading";
-    },
-    [fetchHabits.fulfilled](state, action) {
-      state.entities = action.payload;
-      state.status = "idle";
-    },
-  },
-});
-
-export default habitsSlice.reducer;
-```
-
-Your app should be free of errors, and you should be able to see your initial
-state in the store using the Redux devtools! The final piece missing is your
-database. In the root of your project, create a new file called `db.json`. This
-is where our data will be stored. Add the following seed data to this file:
+In the root of your project, create a new file called `db.json`. This is where
+our data will be stored. Add the following seed data to this file:
 
 ```json
 {
@@ -206,11 +136,11 @@ is where our data will be stored. Add the following seed data to this file:
 }
 ```
 
-Finally, let's get the json-server running. Run the following in your console,
-and then head to `http://localhost:3000/habits` in your browser.
+Finally, let's get the `json-server` running. Run the following in your console,
+and then head to `http://localhost:4000/habits` in your browser.
 
 ```console
-$ json-server --watch db.json
+$ npm run server
 ```
 
 In another terminal, run the following to get your project running:
@@ -220,11 +150,100 @@ $ npm start
 ```
 
 If all is well, you should see the React start up page on
-`http://localhost:3002`, and the initial seed data on
-`http://localhost:3000/habits`.
+`http://localhost:3000`, and the data from the `db.json` file served by
+`json-server` on `http://localhost:4000/habits`.
 
-Use the rubric below, along with the user stories provided at the beginning of
-this README to finish building out your Redux Application.
+### React-Redux Setup
+
+To set up your Redux, we need to start with creating a store using
+`configureStore` from Redux Toolkit. Create a new file called `store.js` in your
+project's `src` directory, and add the following code:
+
+```js
+// src/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import habitsReducer from "./features/habitsSlice";
+
+const store = configureStore({
+  reducer: {
+    habits: habitsReducer,
+  },
+});
+
+export default store;
+```
+
+Now let's go ahead and connect our store to the `index.js` file. First we want
+to make sure we have imported the `Provider` component from `react-redux`, as
+well as our store, then pass the store to the `Provider`. When you're done, your
+`index.js` should look like this:
+
+```js
+// src/index.js
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import App from "./App";
+import store from "./store";
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+```
+
+Now you're probably getting a ton of errors from our missing reducer in our
+store. Go ahead and create a new directory `/src/features`, and inside of the
+new directory create a new file called `habitsSlice.js`.
+
+Add the following boilerplate code to `habitsSlice.js`:
+
+```js
+// src/features/habitsSlice.js
+
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+// save our base URL
+const baseUrl = "http://localhost:4000/habits";
+
+export const fetchHabits = createAsyncThunk("habits/fetchHabits", () => {
+  // return a Promise containing the data we want
+  return fetch(baseUrl).then((response) => response.json());
+});
+
+const habitsSlice = createSlice({
+  name: "habits",
+  initialState: {
+    entities: [], // array of habits
+    status: "idle", // loading state
+  },
+  reducers: {
+    // add your reducers here
+  },
+  extraReducers: {
+    // handle async actions: pending, fulfilled, rejected (for errors)
+    [fetchHabits.pending](state) {
+      state.status = "loading";
+    },
+    [fetchHabits.fulfilled](state, action) {
+      state.entities = action.payload;
+      state.status = "idle";
+    },
+  },
+});
+
+export default habitsSlice.reducer;
+```
+
+Your app should be free of errors, and you should be able to see your initial
+state in the store using the Redux devtools!
+
+### Next Steps
+
+Use the rubric below along with the user stories provided at the beginning of
+this README to finish building out your Redux application.
 
 <!-- ## Rubric
 
@@ -314,3 +333,7 @@ criteria:
   https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api
 [rtl]: https://testing-library.com/docs/react-testing-library/intro
 [jest]: https://jestjs.io/ -->
+
+```
+
+```
