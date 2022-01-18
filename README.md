@@ -65,14 +65,13 @@ $ npx create-react-app <your-app-name>
 ```
 
 Let's start by installing `react-redux` so we can connect all the moving pieces
-of our app. 
+of our app.
 
 ```console
 $ npm install react-redux
 ```
 
-Next, we want to install the redux toolkit. If you need a refresher,
-revisit
+Next, we want to install the redux toolkit. If you need a refresher, revisit
 [this lesson.](https://github.com/learn-co-curriculum/react-hooks-redux-toolkit)
 CD into your app's directory and then run:
 
@@ -98,7 +97,8 @@ $ npm install -g json-server
 
 ## Getting Started
 
-Open up your project in your text editor, and then let's get all of our dependencies:
+Open up your project in your text editor, and then let's get all of our
+dependencies:
 
 ```console
 $ npm install
@@ -133,7 +133,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
-import store from "./store"; 
+import store from "./store";
 
 ReactDOM.render(
   <Provider store={store}>
@@ -162,7 +162,7 @@ export const fetchHabits = createAsyncThunk("habits/fetchHabits", () => {
   return fetch(baseUrl)
     .then((response) => response.json())
     .then((data) => data);
-} );
+});
 
 // export const habitsSlice = createSlice({)}
 
@@ -185,7 +185,7 @@ const habitsSlice = createSlice({
       state.status = "idle";
     },
   },
-} );
+});
 
 export default habitsSlice.reducer;
 ```
@@ -241,8 +241,9 @@ In another terminal, run the following to get your project running:
 $ npm start
 ```
 
-If all is well, you should see the React start up page on `http://localhost:3002`,
-and the initial seed data on `http://localhost:3000/habits`.
+If all is well, you should see the React start up page on
+`http://localhost:3002`, and the initial seed data on
+`http://localhost:3000/habits`.
 
 Use the rubric below, along with the user stories provided at the beginning of
 this README to finish building out your Redux Application.
