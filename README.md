@@ -276,6 +276,30 @@ component accessing the Redux store?
 Use the rubric below along with the user stories provided at the beginning of
 this README to finish building out your Redux application.
 
+## Submitting
+
+In order to submit your project, you'll need to create a new GitHub repository
+for your code following the guide below. Since you'll be using the existing code
+from your local repository, **don't** check any of the boxes next to "Add a
+README", "Add a .gitignore", or "Choose a license".
+
+- [Create a repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository)
+
+Once your repository is created, follow the instructions to push an existing
+repository from the command line:
+
+```console
+$ git remote add origin git@github.com:your-name/your-repo-name.git
+$ git branch -M main
+$ git push -u origin main
+```
+
+It's recommended that you create a GitHub repository for your project and push
+up your code often.
+
+Once your work is done, submit a link to your GitHub repository in Canvas for
+review.
+
 <!-- ## Rubric
 
 Your assignment will be evaluated on a 1-4 scale for each of the following
