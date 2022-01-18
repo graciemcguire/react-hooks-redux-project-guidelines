@@ -64,13 +64,14 @@ react app by running the following:
 $ npx create-react-app <your-app-name>
 ```
 
-Let's start by installing Redux Toolkit, which includes all the code needed for
-working with React and Redux together. If you need a refresher, revisit
+Let's start by installing Redux Toolkit and React-Redux, which include all the
+code needed for working with React and Redux together. If you need a refresher,
+revisit
 [this lesson](https://github.com/learn-co-curriculum/react-hooks-redux-toolkit).
-CD into your app's directory and then run:
+`cd` into your app's directory and then run:
 
 ```console
-$ npm install @reduxjs/toolkit
+$ npm install @reduxjs/toolkit react-redux
 ```
 
 We also want to make sure we have `json-server` installed so we can persist data
@@ -84,6 +85,10 @@ $ npm install json-server
 
 Open up your project in your text editor to follow along with the next steps,
 where we'll configure `json-server` and begin scaffolding the React application.
+
+> **Note**: A completed version of the starter code is available in the
+> `example-code` folder in this repository so you can compare your code when
+> you've finished working through the setup instructions.
 
 ### Configuring `json-server`
 
@@ -162,7 +167,7 @@ project's `src` directory, and add the following code:
 ```js
 // src/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import habitsReducer from "./features/habitsSlice";
+import habitsReducer from "./features/habits/habitsSlice";
 
 const store = configureStore({
   reducer: {
@@ -195,13 +200,13 @@ ReactDOM.render(
 ```
 
 Now you're probably getting a ton of errors from our missing reducer in our
-store. Go ahead and create a new directory `/src/features`, and inside of the
-new directory create a new file called `habitsSlice.js`.
+store. Go ahead and create a new directory `/src/features/habits`, and inside of
+the new directory create a new file called `habitsSlice.js`.
 
 Add the following boilerplate code to `habitsSlice.js`:
 
 ```js
-// src/features/habitsSlice.js
+// src/features/habits/habitsSlice.js
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -237,8 +242,34 @@ const habitsSlice = createSlice({
 export default habitsSlice.reducer;
 ```
 
-Your app should be free of errors, and you should be able to see your initial
-state in the store using the Redux devtools!
+Your app should be free of errors!
+
+To verify that you can dispatch actions and access the store state, update the
+`App` component as follows:
+
+```jsx
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHabits } from "./features/habits/habitsSlice";
+
+function App() {
+  const dispatch = useDispatch();
+  const habits = useSelector((state) => state.habits.entities);
+
+  useEffect(() => {
+    dispatch(fetchHabits());
+  }, [dispatch]);
+
+  return <div>There are {habits.length} habits in `db.json`</div>;
+}
+
+export default App;
+```
+
+Have a look at the above code and make sure you can follow the flow of
+information from the components and Redux. How is our component communicating
+with the server? What event is causing a network request to be made? How is our
+component accessing the Redux store?
 
 ### Next Steps
 
