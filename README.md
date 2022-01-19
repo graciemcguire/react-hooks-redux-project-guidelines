@@ -300,95 +300,52 @@ up your code often.
 Once your work is done, submit a link to your GitHub repository in Canvas for
 review.
 
-<!-- ## Rubric
+## Rubric
 
 Your assignment will be evaluated on a 1-4 scale for each of the following
 criteria:
 
-- **Create a component hierarchy to represent a UI**
+- **Create a store using Redux to manage global state.**
 
-1. Did not manage to render everything required by the user stories.
-2. Renders everything that is user stories, but doesn't have features cleanly
-   separated into separate components (i.e. no strong separation of concerns
-   between components).
-3. Renders everything that is asked for in the deliverables. Components are
-   abstract/reusable. No unnecessary components were created.
-4. Additional components created to complete one or more bonus deliverables.
+1. Does not successfully create a store using Redux.
+2. Creates a store using Redux that includes an initial state as well as
+   reducers for some, but not all, of the user stories defined in the
+   deliverables (i.e. has a reducer to create and remove habits, but not update
+   them).
+3. Creates a store in Redux that has an initial state and reducers to handle all
+   of the user stories.
+4. Includes additional reducers for handling bonus deliverables.
 
-- **Manage state in a React application**
+- **Subscribe a component to changes in the Redux store state.**
 
-1. Does not have all the necessary state to achieve the functionality required
-   by the user stories.
-2. Has all the necessary state required by the user stories, but is not managing
-   state following best practices (i.e. state is duplicated between components;
-   state is held higher in the component tree than it should be; state not being
-   updated following user events).
-3. Has all the necessary state required by the user stories. State is not
-   duplicated and is held at the appropriate components in the component
-   hierarchy. State is successfully updated in response to user events.
-4. Uses state successfully to complete one or more bonus deliverables.
+1. Does not successfully subscribe a component to the Redux store.
+2. Successfully subscribes a component to the Redux store using the
+   `useSelector` hook, but does not follow best practices (i.e. returns more
+   state than needed in the component), or does not use the `useSelector` hook
+   in the appropriate components (i.e. only uses `useSelector` in one high-level
+   component instead of throughout the component hierarchy).
+3. Successfully subscribes components to the Redux store using the `useSelector`
+   hook and follows best practices, only accessing the necessary state within
+   each component that should be subscribed to the store.
+4. Uses the `useSelector` hook to handle bonus deliverables.
 
-- **Interact with an API from a React application**
+- **Dispatch actions to update the Redux store state based on user events.**
 
-1. Does not use the API successfully to achieve the functionality required by
-   the user stories.
-2. Is able to interact with the API successfully, but is not following best
-   practices (i.e. incorrect use of `useEffect` and the dependencies array;
-   incorrect syntax for `fetch`/network request code; not handling loading state
-   when waiting for API response).
-3. Uses the API successfully to achieve the functionality required by the user
-   stories, following best practices.
-4. Uses additional features of the API to successfully complete one or more
-   bonus deliverables.
+1. Does not successfully dispatch actions to the Redux store.
+2. Successfully dispatches at least one action to the Redux store, but does not
+   dispatch actions for all the user stories (i.e. dispatches actions to create
+   and remove habits, but not update them).
+3. Successfully dispatches actions for all of the user stories.
+4. Successfully dispatches actions to handle bonus deliverables.
 
-- **Create client-side routes using React Router and display different
-  components based on URL navigation**
+- **Handle asynchronous actions such as API requests using Redux.**
 
-1. Does not use React Router to achieve the functionality required by the user
-   stories.
-2. Is able to use React Router, but is missing some components (i.e. not able to
-   use a `<Link>` component with a `<Route>` component; not able to use
-   `useParams` to get data from URL params).
-3. Uses React Router successfully to achieve the functionality required by the
-   user stories, and demonstrates the ability to use the `<BrowserRouter>`,
-   `<Link>`, `<Route>`, and `<Switch>` components and the `useParams` hook.
-4. Uses React Router to successfully complete one or more bonus deliverables.
-
-- **Follow a test-driven development process to writing React code, including
-  unit tests for individual components as well as integration tests for
-  component hierarchies**.
-
-1. Few or no tests present in the completed application.
-2. Has tests present, but tests don't cover all of the functionality required by
-   the user stories. Not able to perform advanced tests, such as working with an
-   API or testing components that use React Router.
-3. Has tests for all the functionality required by the user stories. Tests are
-   present for both individual components as well as larger component
-   hierarchies. Performs tests that make requests to an API, and tests
-   components that use React Router.
-4. Has tests coverage for one or more bonus deliverables. -->
-
-<!-- ## Resources
-
-- [Create React App][create-react-app]
-- [React Router 5][react router 5]
-- [React Testing Library][rtl]
-- [Jest][jest]
-- [Mock Service Worker][msw]
-- [GitHub API][gh api]
-
-[thinking]: https://reactjs.org/docs/thinking-in-react.html
-[create-react-app]: https://create-react-app.dev/
-[create-react-app env]:
-  https://create-react-app.dev/docs/adding-custom-environment-variables/
-[msw]: https://mswjs.io/
-[react router 5]: https://v5.reactrouter.com/
-[react router 6]: https://reactrouter.com/docs/en/v6/upgrading/v5
-[gh api]:
-  https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api
-[rtl]: https://testing-library.com/docs/react-testing-library/intro
-[jest]: https://jestjs.io/ -->
-
-```
-
-```
+1. Does not successfully handle asynchronous actions for API requests using
+   Redux.
+2. Successfully handles asynchronous actions for API requests using Redux, but
+   does not follow best practices (i.e. doesn't handle different loading/error
+   states), or does not handle asynchronous actions for all user stories (i.e.
+   does not persist creating/updating/deleting habits).
+3. Successfully handles asynchronous actions for API requests following best
+   practices (i.e. handles different loading/error states) for all user stories.
+4. Successfully handles asynchronous actions for bonus deliverables.
