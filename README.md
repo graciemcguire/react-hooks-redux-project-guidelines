@@ -87,7 +87,7 @@ Open up your project in your text editor to follow along with the next steps,
 where we'll configure `json-server` and begin scaffolding the React application.
 
 > **Note**: A completed version of the starter code is available in the
-> `example-code` folder in this repository so you can compare your code when
+> `example-app` folder in this repository so you can compare your code when
 > you've finished working through the setup instructions.
 
 ### Configuring `json-server`
@@ -158,125 +158,7 @@ If all is well, you should see the React start up page on
 `http://localhost:3000`, and the data from the `db.json` file served by
 `json-server` on `http://localhost:4000/habits`.
 
-### React-Redux Setup
-
-To set up your Redux, we need to start with creating a store using
-`configureStore` from Redux Toolkit. Create a new file called `store.js` in your
-project's `src` directory, and add the following code:
-
-```js
-// src/store.js
-import { configureStore } from "@reduxjs/toolkit";
-import habitsReducer from "./features/habits/habitsSlice";
-
-const store = configureStore({
-  reducer: {
-    habits: habitsReducer,
-  },
-});
-
-export default store;
-```
-
-Now let's go ahead and connect our store to the `index.js` file. First we want
-to make sure we have imported the `Provider` component from `react-redux`, as
-well as our store, then pass the store to the `Provider`. When you're done, your
-`index.js` should look like this:
-
-```js
-// src/index.js
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import App from "./App";
-import store from "./store";
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById("root")
-);
-```
-
-Now you're probably getting a ton of errors from our missing reducer in our
-store. Go ahead and create a new directory `/src/features/habits`, and inside of
-the new directory create a new file called `habitsSlice.js`.
-
-Add the following boilerplate code to `habitsSlice.js`:
-
-```js
-// src/features/habits/habitsSlice.js
-
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-// save our base URL
-const baseUrl = "http://localhost:4000/habits";
-
-export const fetchHabits = createAsyncThunk("habits/fetchHabits", () => {
-  // return a Promise containing the data we want
-  return fetch(baseUrl).then((response) => response.json());
-});
-
-const habitsSlice = createSlice({
-  name: "habits",
-  initialState: {
-    entities: [], // array of habits
-    status: "idle", // loading state
-  },
-  reducers: {
-    // add your reducers here
-  },
-  extraReducers: {
-    // handle async actions: pending, fulfilled, rejected (for errors)
-    [fetchHabits.pending](state) {
-      state.status = "loading";
-    },
-    [fetchHabits.fulfilled](state, action) {
-      state.entities = action.payload;
-      state.status = "idle";
-    },
-  },
-});
-
-export default habitsSlice.reducer;
-```
-
-Your app should be free of errors!
-
-To verify that you can dispatch actions and access the store state, update the
-`App` component as follows:
-
-```jsx
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchHabits } from "./features/habits/habitsSlice";
-
-function App() {
-  const dispatch = useDispatch();
-  const habits = useSelector((state) => state.habits.entities);
-
-  useEffect(() => {
-    dispatch(fetchHabits());
-  }, [dispatch]);
-
-  return <div>There are {habits.length} habits in `db.json`</div>;
-}
-
-export default App;
-```
-
-Have a look at the above code and make sure you can follow the flow of
-information from the components and Redux. How is our component communicating
-with the server? What event is causing a network request to be made? How is our
-component accessing the Redux store?
-
-### Next Steps
-
-Use the rubric below along with the user stories provided at the beginning of
-this README to finish building out your Redux application.
-
-## Submitting
+### Setting Up a GitHub Repository
 
 In order to submit your project, you'll need to create a new GitHub repository
 for your code following the guide below. Since you'll be using the existing code
@@ -294,8 +176,13 @@ $ git branch -M main
 $ git push -u origin main
 ```
 
-It's recommended that you create a GitHub repository for your project and push
-up your code often.
+It's recommended that you commit and push up your code often.
+
+## Next Steps
+
+Now that you've got the project scaffolded and have `json-server` all set up,
+you can start working on building features based on the user stories and
+wireframes above.
 
 Once your work is done, submit a link to your GitHub repository in Canvas for
 review.
